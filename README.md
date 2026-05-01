@@ -444,3 +444,4 @@ This keeps the schedule at 8 AM and 8 PM UTC while authenticating requests with 
 3. Make your changes
 4. Run tests: `bun test`, `bun run build`, `bun run lint`
 5. Submit a pull request
+# MemorEase

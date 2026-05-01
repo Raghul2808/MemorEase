@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+APP_DIR=${APP_DIR:-/opt/MemorEase}
+DEPLOY_BRANCH=${DEPLOY_BRANCH:-main}
+MemorEase_ENV_FILE=${MemorEase_ENV_FILE:-/opt/MemorEase/.env}
+REPO_URL=${REPO_URL:-https://github.com/4regab/MemorEase.git}
+MIN_FREE_KB=${MIN_FREE_KB:-6291456}
+
+for command in git docker; do
+  if ! command -v "$command" >/dev/null 2>&1; then
+    echo "Missing required command: $command" >&2
+    exit 1
+  fi
+done
+
+if ! docker compose version >/dev/null 2>&1; then
+  echo 'docker compose is required on the deployment host' >&2
+  exit 1
+fi
+
+if [ ! -f "$MemorEase_ENV_FILE" ]; then
+  echo "Missing environment file: $MemorEase_ENV_FILE" >&2
+  exit 1
+fi
+
+mkdir -p "$APP_DIR"
+
+cd "$APP_DIR"
+
+current_user=$(id -un)
+current_group=$(id -gn)
+
+if [ ! -w "$APP_DIR" ] || { [ -d "$APP_DIR/.git" ] && [ ! -w "$APP_DIR/.git" ]; }; then
+  app_meta=$(stat -c '%A %U:%G' "$APP_DIR")
+  git_meta=$(stat -c '%A %U:%G' "$APP_DIR/.git" 2>/dev/null || echo 'unknown')
+  echo "Deployment user ${current_user}:${current_group} cannot write to $APP_DIR." >&2
+  echo "Current permissions: $APP_DIR=$app_meta, $APP_DIR/.git=$git_meta" >&2
+  echo "Fix on the host: sudo chown -R ${current_user}:${current_group} \"$APP_DIR\" && sudo chmod -R u+rwX \"$APP_DIR\"" >&2
+  exit 1
+fi
+
+if ! git config --global --get-all safe.directory | grep -Fx "$APP_DIR" >/dev/null 2>&1; then
+  git config --global --add safe.directory "$APP_DIR"
+fi
+
+if [ ! -d .git ]; then
+  git init
+fi
+
+if git remote | grep -Fx origin >/dev/null 2>&1; then
+  git remote set-url origin "$REPO_URL"
+else
+  git remote add origin "$REPO_URL"
+fi
+
+git fetch origin "$DEPLOY_BRANCH"
+git checkout -B "$DEPLOY_BRANCH" "origin/$DEPLOY_BRANCH"
+git reset --hard "origin/$DEPLOY_BRANCH"
+
+set -a
+# shellcheck disable=SC1090
+. "$MemorEase_ENV_FILE"
+set +a
+
+export MemorEase_ENV_FILE
+
+available_kb=$(df -Pk "$APP_DIR" | awk 'NR==2 {print $4}')
+if [ "${available_kb:-0}" -lt "$MIN_FREE_KB" ]; then
+  echo "Low free disk space detected (${available_kb}KB). Running Docker cleanup before build..."
+  docker compose down --remove-orphans >/dev/null 2>&1 || true
+  docker builder prune -af >/dev/null 2>&1 || true
+  docker image prune -af >/dev/null 2>&1 || true
+  docker container prune -f >/dev/null 2>&1 || true
+  docker volume prune -f >/dev/null 2>&1 || true
+fi
+
+docker compose build --pull
+docker compose up -d --remove-orphans
+docker compose ps
+docker image prune -f >/dev/null 2>&1 || true

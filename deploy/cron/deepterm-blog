@@ -1,0 +1,6 @@
+CRON_TZ=UTC
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+0 8 * * * root MemorEase_ENV_FILE=/opt/MemorEase/.env /usr/local/bin/MemorEase-generate-article >> /var/log/MemorEase-cron.log 2>&1
+0 20 * * * root MemorEase_ENV_FILE=/opt/MemorEase/.env /usr/local/bin/MemorEase-generate-article >> /var/log/MemorEase-cron.log 2>&1

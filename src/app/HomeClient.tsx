@@ -140,7 +140,7 @@ export default function HomeClient() {
               </button>
             )}
             <a
-              href="https://github.com/4regab/MemorEase"
+              href="https://github.com/Raghul2808/MemorEase"
               target="_blank"
               rel="noopener noreferrer"
               className="h-[48px] sm:h-[56px] w-full sm:w-auto rounded-full px-6 sm:px-10 font-sora text-[14px] sm:text-[16px] font-medium transition-all duration-300 flex items-center justify-center gap-2 border-2 hover:scale-[1.02] border-[#171d2b]/20 text-[#171d2b] hover:bg-[#171d2b]/5"

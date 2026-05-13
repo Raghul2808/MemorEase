@@ -28,7 +28,7 @@ Prepare the application directory once on the host:
 ```bash
 sudo mkdir -p /opt/MemorEase
 sudo chown "$USER:$USER" /opt/MemorEase
-git clone --branch main https://github.com/4regab/MemorEase /opt/MemorEase
+git clone --branch main https://github.com/Raghul2808/MemorEase /opt/MemorEase
 ```
 
 If `/opt/MemorEase` or its `.git` directory was ever created with `sudo`, fix the ownership before using the deploy workflow:

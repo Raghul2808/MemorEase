@@ -713,7 +713,7 @@ export default function HelpClient() {
                     Email Support
                   </a>
                   <a
-                    href="https://github.com/4regab/MemorEase/issues"
+                    href="https://github.com/Raghul2808/MemorEase/issues"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto h-[46px] px-6 rounded-full border-2 border-[#171d2b]/20 text-[#171d2b] font-sora text-[14px] hover:bg-[#171d2b]/5 transition-colors flex items-center justify-center gap-2"

@@ -5,7 +5,7 @@ set -euo pipefail
 APP_DIR=${APP_DIR:-/opt/MemorEase}
 DEPLOY_BRANCH=${DEPLOY_BRANCH:-main}
 MemorEase_ENV_FILE=${MemorEase_ENV_FILE:-/opt/MemorEase/.env}
-REPO_URL=${REPO_URL:-https://github.com/4regab/MemorEase.git}
+REPO_URL=${REPO_URL:-https://github.com/Raghul2808/MemorEase.git}
 MIN_FREE_KB=${MIN_FREE_KB:-6291456}
 
 for command in git docker; do

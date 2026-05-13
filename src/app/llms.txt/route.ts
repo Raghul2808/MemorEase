@@ -54,7 +54,7 @@ export async function GET() {
         '',
         '## Optional',
         '',
-        '- [GitHub Repository](https://github.com/4regab/MemorEase): Open-source codebase',
+        '- [GitHub Repository](https://github.com/Raghul2808/MemorEase): Open-source codebase',
         '- [Donate](https://github.com/Raghul2808): Support development on Ko-fi',
         '',
     ]

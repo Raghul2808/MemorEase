@@ -88,5 +88,5 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
           ssh -i ~/.ssh/id_ed25519 -p "${EC2_PORT:-22}" "${EC2_USER}@${EC2_HOST}" \
-            "APP_DIR=/opt/MemorEase DEPLOY_BRANCH=main MemorEase_ENV_FILE=/opt/MemorEase/.env REPO_URL=https://github.com/4regab/MemorEase.git bash -s" \
+            "APP_DIR=/opt/MemorEase DEPLOY_BRANCH=main MemorEase_ENV_FILE=/opt/MemorEase/.env REPO_URL=https://github.com/Raghul2808/MemorEase.git bash -s" \
             < deploy/scripts/deploy.sh

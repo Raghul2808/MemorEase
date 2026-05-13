@@ -22,7 +22,7 @@ export const siteConfig = {
   ],
   authors: [{ name: 'MemorEase', url: 'https://MemorEase.tech' }],
   links: {
-    github: 'https://github.com/4regab/MemorEase',
+    github: 'https://github.com/Raghul2808/MemorEase',
     twitter: 'https://twitter.com/MemorEase',
   },
 }
